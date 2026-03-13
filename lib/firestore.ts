@@ -1,5 +1,5 @@
 import {
-  doc, setDoc, getDoc, collection, getDocs, deleteDoc, updateDoc, serverTimestamp
+  doc, setDoc, getDoc, collection, getDocs, deleteDoc, updateDoc, serverTimestamp, FieldValue
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { PasswordEntry } from "@/components/data/mockData";
@@ -19,8 +19,8 @@ export interface UserProfile {
   pinHash: string;
   masterPasswordHash: string;
   recoveryEmail: string;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: FieldValue;
+  updatedAt: FieldValue;
 }
 
 export async function getUserProfile(uid: string): Promise<UserProfile | null> {

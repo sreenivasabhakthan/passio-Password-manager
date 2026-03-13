@@ -11,6 +11,8 @@
 :root {
   --bg-primary: #050708;
   --text-primary: #E2E8F0;
+  /* Safe area for notched phones (iPhone, etc.) */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 body {
@@ -23,6 +25,26 @@ body {
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent text inflation on mobile */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Better tap experience */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html {
+  /* Support dynamic viewport height on mobile browsers */
+  height: -webkit-fill-available;
+}
+
+::selection {
+  background-color: rgba(190, 242, 100, 0.4);
+  color: #ffffff;
+}
+::-moz-selection {
+  background-color: rgba(190, 242, 100, 0.4);
+  color: #ffffff;
 }
 
 /* Material Symbols */
@@ -109,4 +131,27 @@ body {
 }
 .animate-shake {
   animation: shake 0.5s ease-in-out;
+}
+
+/* ── Mobile safe area for bottom tab bar ── */
+.safe-area-inset-bottom {
+  padding-bottom: calc(0.25rem + var(--safe-bottom));
+}
+
+/* ── Responsive touch target sizes ── */
+@media (max-width: 768px) {
+  /* Bigger tap targets on mobile */
+  button { min-height: 40px; }
+
+  /* Keyboard-aware: when soft keyboard opens, shrink gracefully */
+  .mobile-scroll-area {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ensure modals are full screen on small devices */
+  .fixed.inset-0 > div {
+    max-height: 100dvh;
+    overflow-y: auto;
+  }
 }

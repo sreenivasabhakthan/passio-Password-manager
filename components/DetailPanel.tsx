@@ -354,7 +354,7 @@ export default function DetailPanel({
           </div>
           <div>
             <h4 className="text-amber-500 font-bold text-sm">Lazy Bones: Reused password detected</h4>
-            <p className="text-xs text-slate-400">This password is used on another site. That's like using the same key for your house and your diary.</p>
+            <p className="text-xs text-slate-400">This password is used on another site. That&apos;s like using the same key for your house and your diary.</p>
           </div>
         </div>
       )}

@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
+import { hashPin } from "@/lib/firestore";
 
 interface LockScreenProps {
   onUnlock: () => void;
+  masterPasswordHash: string;
 }
 
-export default function LockScreen({ onUnlock }: LockScreenProps) {
+export default function LockScreen({ onUnlock, masterPasswordHash }: LockScreenProps) {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [error, setError] = useState(false);
@@ -15,14 +17,30 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
     if (!password) return;
     setLoading(true);
     setError(false);
-    await new Promise((r) => setTimeout(r, 800));
-    // Simple demo unlock logic
-    if (password.length >= 4) {
-      onUnlock();
-    } else {
+    
+    try {
+      const enteredHash = await hashPin(password);
+      // If we have a hash to check against
+      if (masterPasswordHash) {
+        if (enteredHash === masterPasswordHash) {
+          onUnlock();
+        } else {
+          setError(true);
+        }
+      } else {
+        // Fallback for demo/initial load if hash isn't ready
+        if (password.length >= 4) {
+          onUnlock();
+        } else {
+          setError(true);
+        }
+      }
+    } catch (err) {
+      console.error("Unlock error:", err);
       setError(true);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -34,8 +52,8 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
         <div className="glass-card border border-white/10 rounded-3xl shadow-2xl p-10 text-center backdrop-blur-2xl">
           {/* Shield icon */}
           <div className="mb-10 flex justify-center">
-            <div className="shield-pulse w-24 h-24 rounded-3xl bg-[#BEF264]/10 border border-[#BEF264]/30 flex items-center justify-center glow-sm">
-              <span className="material-symbols-outlined text-[48px] neon-green-text">lock_open</span>
+            <div className="shield-pulse w-24 h-24 rounded-3xl bg-[#BEF264]/10 border border-[#BEF264]/30 flex items-center justify-center glow-sm overflow-hidden p-2">
+              <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover rounded-2xl" />
             </div>
           </div>
 

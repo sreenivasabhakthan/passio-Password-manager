@@ -54,7 +54,7 @@ export default function SetupScreen() {
       return;
     }
     if (masterPassword !== confirmMaster) {
-      setError("Passwords don't match.");
+      setError("Passwords don&apos;t match.");
       return;
     }
     setError("");
@@ -75,7 +75,7 @@ export default function SetupScreen() {
     const original = pin.join("");
     const confirm = confirmPin.join("");
     if (original !== confirm) {
-      setError("PINs don't match. Try again.");
+      setError("PINs don&apos;t match. Try again.");
       setConfirmPin(["", "", "", "", "", ""]);
       setTimeout(() => confirmPinRefs.current[0]?.focus(), 100);
       return;
@@ -130,7 +130,7 @@ export default function SetupScreen() {
             </div>
             <h1 className="text-3xl font-bold text-white mb-3">Welcome to the Hoard!</h1>
             <p className="text-sm text-slate-500 mb-2">Hey <span className="neon-green-text font-bold">{user?.displayName || "adventurer"}</span>,</p>
-            <p className="text-sm text-slate-500 mb-8">Let's set up your vault security. This only takes a minute.</p>
+            <p className="text-sm text-slate-500 mb-8">Let&apos;s set up your vault security. This only takes a minute.</p>
 
             <div className="space-y-3 text-left glass-card rounded-2xl p-6 border border-white/5 mb-8">
               <div className="flex items-center gap-3">
@@ -157,7 +157,7 @@ export default function SetupScreen() {
                 </div>
                 <div>
                   <p className="text-sm font-bold text-white">Step 3: Biometrics (Optional)</p>
-                  <p className="text-[10px] text-slate-500">For when you're feeling fancy</p>
+                  <p className="text-[10px] text-slate-500">For when you&apos;re feeling fancy</p>
                 </div>
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function SetupScreen() {
               onClick={() => setStep("master_password")}
               className="w-full py-3.5 rounded-2xl neon-green-bg text-black font-bold text-sm hover:bg-[#D9F99D] transition-all glow-sm"
             >
-              Let's Secure This Hoard →
+              Let&apos;s Secure This Hoard →
             </button>
           </div>
         )}
@@ -192,7 +192,7 @@ export default function SetupScreen() {
                     type={showMaster ? "text" : "password"}
                     value={masterPassword}
                     onChange={(e) => { setMasterPassword(e.target.value); setError(""); }}
-                    placeholder="Something you'll never forget..."
+                    placeholder="Something you&apos;ll never forget..."
                     className="w-full bg-[#0A0D0F] border border-white/10 rounded-xl py-3 px-4 pr-12 text-white text-sm focus:ring-1 focus:ring-[#BEF264] focus:border-[#BEF264] outline-none transition-all"
                   />
                   <button

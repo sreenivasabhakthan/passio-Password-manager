@@ -49,8 +49,8 @@ export default function AuthScreen() {
               <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-5">
                 <span className="material-symbols-outlined text-amber-400 text-[32px]">mail_lock</span>
               </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Recovery Email</h2>
-              <p className="text-sm text-slate-500">We'll send a recovery link to reset your vault access.</p>
+                <h3 className="text-xl font-bold text-white tracking-tight mb-2">Lost Magic Word?</h3>
+                <p className="text-sm text-slate-500 mb-8">Don&apos;t worry, we&apos;ve all been there. Enter your registered email and we&apos;ll send your vault recovery ritual.</p>
             </div>
 
             {forgotSent ? (
@@ -86,11 +86,8 @@ export default function AuthScreen() {
           <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up">
             {/* Logo */}
             <div className="text-center mb-10">
-              <div className="w-20 h-20 rounded-2xl neon-green-bg flex items-center justify-center mx-auto mb-6 glow-md shield-pulse">
-                <svg fill="none" height="40" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="40" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 4.8 17 6 19 6a1 1 0 0 1 1 1z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
+              <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-md shield-pulse overflow-hidden bg-[#BEF264]">
+                <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover" />
               </div>
               <h1 className="text-3xl font-bold text-white tracking-tight mb-2">Passio</h1>
               <p className="text-sm text-slate-500 font-medium">The Digital Hoard</p>

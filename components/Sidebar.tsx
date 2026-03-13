@@ -36,11 +36,8 @@ export default function Sidebar({ activeSection, onSectionChange, entries, onLoc
         className="flex items-center gap-3 mb-10 px-2 cursor-pointer"
         onClick={() => onSectionChange("all")}
       >
-        <div className="w-8 h-8 rounded-lg neon-green-bg flex items-center justify-center glow-sm flex-shrink-0">
-          <svg fill="none" height="20" stroke="black" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 4.8 17 6 19 6a1 1 0 0 1 1 1z" />
-            <path d="m9 12 2 2 4-4" />
-          </svg>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center glow-sm flex-shrink-0 overflow-hidden bg-[#BEF264]">
+          <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover" />
         </div>
         <span className="text-lg font-bold tracking-tight text-white leading-tight hidden lg:block">
           Passio: The Digital Hoard
