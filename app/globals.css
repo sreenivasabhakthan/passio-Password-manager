@@ -13,6 +13,7 @@
   --text-primary: #E2E8F0;
   /* Safe area for notched phones (iPhone, etc.) */
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
 }
 
 body {
@@ -31,11 +32,16 @@ body {
   /* Better tap experience */
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 html {
   /* Support dynamic viewport height on mobile browsers */
   height: -webkit-fill-available;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -138,10 +144,20 @@ html {
   padding-bottom: calc(0.25rem + var(--safe-bottom));
 }
 
+.safe-area-inset-top {
+  padding-top: var(--safe-top);
+}
+
 /* ── Responsive touch target sizes ── */
 @media (max-width: 768px) {
   /* Bigger tap targets on mobile */
   button { min-height: 40px; }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
 
   /* Keyboard-aware: when soft keyboard opens, shrink gracefully */
   .mobile-scroll-area {

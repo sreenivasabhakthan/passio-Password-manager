@@ -9,44 +9,35 @@ interface ToastProps {
 }
 
 export default function Toast({ message, visible, onHide, countdown }: ToastProps) {
-  const [show, setShow] = useState(false);
-  const [remaining, setRemaining] = useState(countdown ?? 0);
+  const [remaining, setRemaining] = useState(() => countdown ?? 0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const countRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (visible) {
-      setShow(true);
-      setRemaining(countdown ?? 0);
+    if (!visible) return;
 
-      // Auto-dismiss after 2.5s (or countdown duration if longer)
-      const dismissMs = countdown ? Math.min(countdown * 1000, 5000) : 2500;
-      timerRef.current = setTimeout(() => {
-        setShow(false);
-        onHide();
-      }, dismissMs);
+    const dismissMs = countdown ? Math.min(countdown * 1000, 5000) : 2500;
+    timerRef.current = setTimeout(() => {
+      onHide();
+    }, dismissMs);
 
-      // Countdown ticker for clipboard clear
-      if (countdown) {
-        countRef.current = setInterval(() => {
-          setRemaining((c) => Math.max(0, c - 1));
-        }, 1000);
-      }
-
-      return () => {
-        if (timerRef.current) clearTimeout(timerRef.current);
-        if (countRef.current) clearInterval(countRef.current);
-      };
-    } else {
-      setShow(false);
+    if (countdown) {
+      countRef.current = setInterval(() => {
+        setRemaining((c) => Math.max(0, c - 1));
+      }, 1000);
     }
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      if (countRef.current) clearInterval(countRef.current);
+    };
   }, [visible, message, countdown, onHide]);
 
-  if (!show) return null;
+  if (!visible) return null;
 
   return (
-    <div className="fixed bottom-8 right-8 z-[100] toast-enter">
-      <div className="glass-card flex items-center gap-4 border-[#BEF264]/30 rounded-2xl px-5 py-4 shadow-2xl backdrop-blur-xl min-w-[280px]">
+    <div className="fixed bottom-[5.5rem] sm:bottom-8 left-3 right-3 sm:left-auto sm:right-8 z-[100] toast-enter">
+      <div className="glass-card flex items-center gap-3 sm:gap-4 border-[#BEF264]/30 rounded-2xl px-4 sm:px-5 py-3.5 sm:py-4 shadow-2xl backdrop-blur-xl min-w-0 sm:min-w-[280px]">
         <div className="w-10 h-10 rounded-xl bg-[#BEF264]/10 flex items-center justify-center flex-shrink-0">
           <span className="material-symbols-outlined neon-green-text text-[20px]">verified</span>
         </div>

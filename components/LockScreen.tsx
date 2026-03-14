@@ -49,7 +49,7 @@ export default function LockScreen({ onUnlock, masterPasswordHash }: LockScreenP
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#BEF264] opacity-[0.05] blur-[150px] rounded-full pointer-events-none"></div>
       
       <div className="relative w-full max-w-sm mx-4">
-        <div className="glass-card border border-white/10 rounded-3xl shadow-2xl p-10 text-center backdrop-blur-2xl">
+        <div className="glass-card border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-10 text-center backdrop-blur-2xl">
           {/* Shield icon */}
           <div className="mb-10 flex justify-center">
             <div className="shield-pulse w-24 h-24 rounded-3xl bg-[#BEF264]/10 border border-[#BEF264]/30 flex items-center justify-center glow-sm overflow-hidden p-2">
@@ -57,7 +57,7 @@ export default function LockScreen({ onUnlock, masterPasswordHash }: LockScreenP
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Passio</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-2">Passio</h1>
           <p className="text-slate-500 text-sm mb-10">The hoard is currently sealed. Prove your worth to enter.</p>
 
           <div className="mb-6">

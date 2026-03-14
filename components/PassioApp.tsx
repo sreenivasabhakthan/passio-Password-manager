@@ -280,14 +280,14 @@ export default function PassioApp() {
       <div className="flex-1 flex overflow-hidden relative">
 
         {/* ════ MOBILE LAYOUT (< md) ════ */}
-        <div className="flex md:hidden flex-col w-full h-full">
+        <div className="flex md:hidden flex-col w-full h-full min-w-0 safe-area-inset-top">
           {/* Mobile: show either list or detail */}
           {showHealth ? (
-            <div className="flex-1 overflow-hidden pb-16">
+            <div className="flex-1 overflow-hidden pb-20">
               <HealthPanel entries={entries} onSelect={(e) => { handleHealthSelect(e); }} />
             </div>
           ) : mobileView === "list" ? (
-            <div className="flex-1 overflow-hidden pb-16">
+            <div className="flex-1 overflow-hidden pb-20">
               <MemoizedVaultList
                 entries={listEntries}
                 selectedId={selectedEntry?.id ?? null}
@@ -303,7 +303,7 @@ export default function PassioApp() {
             </div>
           ) : (
             /* Mobile Detail View */
-            <div className="flex-1 overflow-hidden flex flex-col pb-16">
+            <div className="flex-1 overflow-hidden flex flex-col pb-20">
               {/* Back button bar */}
               <div className="flex items-center gap-3 px-4 py-3 border-b border-white/5 bg-[#080A0C] flex-shrink-0">
                 <button
@@ -319,6 +319,7 @@ export default function PassioApp() {
               </div>
               <div className="flex-1 overflow-hidden">
                 <MemoizedDetailPanel
+                  key={selectedEntry?.id ?? "empty-mobile-detail"}
                   entry={selectedEntry}
                   onShowGenerator={() => setShowGenerator(true)}
                   onCopy={handleCopy}
@@ -333,7 +334,7 @@ export default function PassioApp() {
           )}
 
           {/* ── MOBILE BOTTOM TAB BAR ── */}
-          <div className="fixed bottom-0 left-0 right-0 z-30 bg-[#080A0C]/95 backdrop-blur-xl border-t border-white/5 flex items-center justify-around px-2 py-1 safe-area-inset-bottom">
+          <div className="fixed bottom-0 left-0 right-0 z-30 bg-[#080A0C]/95 backdrop-blur-xl border-t border-white/5 flex items-center justify-start overflow-x-auto no-scrollbar px-1 py-1 safe-area-inset-bottom">
             {[
               { id: "all" as Section, icon: "grid_view", label: "Hoard" },
               { id: "favorites" as Section, icon: "favorite", label: "Faves" },
@@ -346,24 +347,24 @@ export default function PassioApp() {
                 <button
                   key={id}
                   onClick={() => handleSectionChange(id)}
-                  className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-all duration-200 flex-1 ${
+                  className={`flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200 min-w-[4.5rem] flex-1 ${
                     isActive ? "text-[#BEF264]" : "text-slate-500 hover:text-slate-300"
                   }`}
                 >
                   <span className={`material-symbols-outlined text-[22px] ${isActive ? "neon-green-text" : ""}`}>
                     {icon}
                   </span>
-                  <span className="text-[10px] font-semibold uppercase tracking-wide">{label}</span>
+                  <span className="text-[9px] font-semibold uppercase tracking-wide">{label}</span>
                 </button>
               );
             })}
             {/* Lock button in bottom bar */}
             <button
               onClick={handleLock}
-              className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-all duration-200 flex-1 text-amber-400"
+              className="flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg transition-all duration-200 min-w-[4.5rem] flex-1 text-amber-400"
             >
               <span className="material-symbols-outlined text-[22px]">lock</span>
-              <span className="text-[10px] font-semibold uppercase tracking-wide">Lock</span>
+              <span className="text-[9px] font-semibold uppercase tracking-wide">Lock</span>
             </button>
           </div>
         </div>
@@ -411,6 +412,7 @@ export default function PassioApp() {
             <HealthPanel entries={entries} onSelect={handleHealthSelect} />
           ) : (
             <MemoizedDetailPanel
+              key={selectedEntry?.id ?? "empty-desktop-detail"}
               entry={selectedEntry}
               onShowGenerator={() => setShowGenerator(true)}
               onCopy={handleCopy}
@@ -434,12 +436,13 @@ export default function PassioApp() {
       )}
 
       {/* ── PIN Verification Modal ── */}
-      <VerifyModal
-        visible={showVerify}
-        onSuccess={handleVerifySuccess}
-        onCancel={handleVerifyCancel}
-        pinHash={profile?.pinHash || ""}
-      />
+      {showVerify && (
+        <VerifyModal
+          onSuccess={handleVerifySuccess}
+          onCancel={handleVerifyCancel}
+          pinHash={profile?.pinHash || ""}
+        />
+      )}
 
       <Toast
         key={toastKey}

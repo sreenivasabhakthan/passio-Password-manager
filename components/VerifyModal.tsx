@@ -3,14 +3,13 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { hashPin } from "@/lib/firestore";
 
 interface VerifyModalProps {
-  visible: boolean;
   onSuccess: () => void;
   onCancel: () => void;
   pinHash: string; // The user's stored PIN hash from Firestore
 }
 
-export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: VerifyModalProps) {
-  const [digits, setDigits] = useState<string[]>(["", "", "", "", "", ""]);
+export default function VerifyModal({ onSuccess, onCancel, pinHash }: VerifyModalProps) {
+  const [digits, setDigits] = useState<string[]>(() => ["", "", "", "", "", ""]);
   const [error, setError] = useState(false);
   const [shake, setShake] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -18,15 +17,9 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    if (visible) {
-      setDigits(["", "", "", "", "", ""]);
-      setError(false);
-      setShake(false);
-      setSuccess(false);
-      setChecking(false);
-      setTimeout(() => inputRefs.current[0]?.focus(), 100);
-    }
-  }, [visible]);
+    const timeout = setTimeout(() => inputRefs.current[0]?.focus(), 100);
+    return () => clearTimeout(timeout);
+  }, []);
 
   const verifyPin = useCallback(async (enteredPin: string) => {
     setChecking(true);
@@ -90,14 +83,12 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
     }
   }, [verifyPin]);
 
-  if (!visible) return null;
-
   return (
     <div
       className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-[60] p-4"
       onClick={(e) => e.target === e.currentTarget && onCancel()}
     >
-      <div className={`glass-card border border-white/10 rounded-3xl shadow-2xl w-full max-w-md animate-scale-up relative overflow-hidden ${shake ? "animate-shake" : ""}`}>
+      <div className={`glass-card border border-white/10 rounded-3xl shadow-2xl w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto animate-scale-up relative overflow-hidden ${shake ? "animate-shake" : ""}`}>
         {success && (
           <div className="absolute inset-0 bg-[#BEF264]/10 flex items-center justify-center z-20 backdrop-blur-sm rounded-3xl">
             <div className="text-center">
@@ -109,7 +100,7 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
           </div>
         )}
 
-        <div className="p-8 pb-2 text-center">
+        <div className="p-6 sm:p-8 pb-2 text-center">
           <div className="w-16 h-16 rounded-2xl bg-amber-500/10 flex items-center justify-center mx-auto mb-5">
             <span className="material-symbols-outlined text-amber-400 text-[32px]">shield_lock</span>
           </div>
@@ -117,8 +108,8 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
           <p className="text-sm text-slate-500">Enter your 6-digit security PIN to authorize this change.</p>
         </div>
 
-        <div className="px-8 py-6">
-          <div className="flex justify-center gap-3" onPaste={handlePaste}>
+        <div className="px-6 sm:px-8 py-6">
+          <div className="grid grid-cols-6 gap-2 sm:gap-3" onPaste={handlePaste}>
             {digits.map((digit, i) => (
               <input
                 key={i}
@@ -130,7 +121,7 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
                 onChange={(e) => handleDigitChange(i, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(i, e)}
                 disabled={checking}
-                className={`w-12 h-14 text-center text-2xl font-bold rounded-xl border-2 outline-none transition-all duration-200 bg-[#0A0D0F] ${
+                className={`w-full h-12 sm:h-14 text-center text-xl sm:text-2xl font-bold rounded-xl border-2 outline-none transition-all duration-200 bg-[#0A0D0F] ${
                   error
                     ? "border-red-500 text-red-400"
                     : digit
@@ -152,7 +143,7 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
           </p>
         </div>
 
-        <div className="px-8 pb-5">
+        <div className="px-6 sm:px-8 pb-5">
           <div className="relative flex items-center justify-center mb-4">
             <div className="border-t border-white/5 flex-1" />
             <span className="px-3 text-[10px] text-slate-600 uppercase tracking-widest font-bold">or</span>
@@ -171,7 +162,7 @@ export default function VerifyModal({ visible, onSuccess, onCancel, pinHash }: V
           </button>
         </div>
 
-        <div className="px-8 pb-8">
+        <div className="px-6 sm:px-8 pb-8">
           <button
             onClick={onCancel}
             className="w-full py-3 rounded-2xl text-slate-600 hover:text-white text-sm font-bold transition-all uppercase tracking-widest"

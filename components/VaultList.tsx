@@ -101,10 +101,10 @@ export default function VaultList({
 
   return (
     <div className="w-full h-full flex flex-col overflow-hidden">
-      <div className="p-6 border-b border-white/5 flex-shrink-0">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-2">
-            <h1 className="text-lg font-bold whitespace-nowrap">{sectionTitle}</h1>
+      <div className="p-4 sm:p-6 border-b border-white/5 flex-shrink-0">
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-center gap-2 min-w-0">
+            <h1 className="text-base sm:text-lg font-bold truncate">{sectionTitle}</h1>
             <span className="text-[10px] font-bold bg-white/5 text-slate-400 rounded-full px-2 py-0.5 border border-white/5">
               {filtered.length}
             </span>
@@ -157,7 +157,7 @@ export default function VaultList({
       </div>
 
       {/* Scrollable Item List */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-1.5">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-1.5">
         {filtered.map((entry) => {
           const isSelected = selectedId === entry.id;
           const isWeak = entry.strength === "Weak";
@@ -170,7 +170,7 @@ export default function VaultList({
               onClick={() => onSelect(entry)}
               onMouseEnter={() => setHoveredId(entry.id)}
               onMouseLeave={() => setHoveredId(null)}
-              className={`rounded-xl p-3.5 flex items-center gap-3.5 cursor-pointer transition-all duration-200 border-l-[3px] transform-gpu ${
+              className={`group rounded-xl p-3 sm:p-3.5 flex items-center gap-3 cursor-pointer transition-all duration-200 border-l-[3px] transform-gpu ${
                 isSelected
                   ? "glass-card neon-green-border"
                   : isBreach
@@ -202,15 +202,15 @@ export default function VaultList({
                   isWeak ? "bg-red-500" : entry.strength === "Medium" ? "bg-amber-500" : "neon-green-bg glow-sm"
                 }`} />
 
-                {isHovered && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); onCopy(entry.password, "Password"); }}
-                    className="p-1 rounded hover:bg-white/10 text-slate-500 hover:text-[#BEF264] transition-colors"
-                    title="Copy Password"
-                  >
-                    <span className="material-symbols-outlined text-[14px]">content_copy</span>
-                  </button>
-                )}
+                <button
+                  onClick={(e) => { e.stopPropagation(); onCopy(entry.password, "Password"); }}
+                  className={`p-1 rounded hover:bg-white/10 text-slate-500 hover:text-[#BEF264] transition-colors ${
+                    isHovered ? "opacity-100" : "opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                  }`}
+                  title="Copy Password"
+                >
+                  <span className="material-symbols-outlined text-[14px]">content_copy</span>
+                </button>
 
                 <button
                   onClick={(e) => { e.stopPropagation(); onToggleFavorite(entry.id); }}

@@ -96,8 +96,8 @@ export default function SetupScreen() {
       });
       await refreshProfile();
       setStep("done");
-    } catch (err: any) {
-      setError(err.message || "Failed to save profile.");
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, "Failed to save profile."));
       setSaving(false);
     }
   };
@@ -118,17 +118,17 @@ export default function SetupScreen() {
   const masterStrength = getStrength(masterPassword);
 
   return (
-    <div className="h-full flex items-center justify-center bg-[#050708] relative overflow-hidden">
+    <div className="h-full flex items-center justify-center bg-[#050708] relative overflow-hidden px-4 py-6 sm:px-6">
       <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#BEF264] opacity-[0.04] blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-lg px-6">
+      <div className="relative z-10 w-full max-w-lg">
         {/* ═══ WELCOME ═══ */}
         {step === "welcome" && (
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
             <div className="w-20 h-20 rounded-2xl neon-green-bg flex items-center justify-center mx-auto mb-6 glow-md">
               <span className="material-symbols-outlined text-black text-[40px]">waving_hand</span>
             </div>
-            <h1 className="text-3xl font-bold text-white mb-3">Welcome to the Hoard!</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-3">Welcome to the Hoard!</h1>
             <p className="text-sm text-slate-500 mb-2">Hey <span className="neon-green-text font-bold">{user?.displayName || "adventurer"}</span>,</p>
             <p className="text-sm text-slate-500 mb-8">Let&apos;s set up your vault security. This only takes a minute.</p>
 
@@ -173,7 +173,7 @@ export default function SetupScreen() {
 
         {/* ═══ MASTER PASSWORD ═══ */}
         {step === "master_password" && (
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up">
             <div className="flex items-center gap-3 mb-8">
               <button onClick={() => setStep("welcome")} className="text-slate-500 hover:text-white transition-colors">
                 <span className="material-symbols-outlined text-[20px]">arrow_back</span>
@@ -254,7 +254,7 @@ export default function SetupScreen() {
 
         {/* ═══ SET PIN ═══ */}
         {step === "pin" && (
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
             <div className="flex items-center gap-3 mb-8 text-left">
               <button onClick={() => setStep("master_password")} className="text-slate-500 hover:text-white transition-colors">
                 <span className="material-symbols-outlined text-[20px]">arrow_back</span>
@@ -267,7 +267,7 @@ export default function SetupScreen() {
 
             <p className="text-sm text-slate-500 mb-8">This PIN will be required for sensitive actions like changing passwords.</p>
 
-            <div className="flex justify-center gap-3 mb-6">
+            <div className="grid grid-cols-6 gap-2 sm:gap-3 mb-6">
               {pin.map((digit, i) => (
                 <input
                   key={i}
@@ -278,7 +278,7 @@ export default function SetupScreen() {
                   value={digit}
                   onChange={(e) => handlePinDigit(i, e.target.value, true)}
                   onKeyDown={(e) => handlePinKeyDown(i, e, true)}
-                  className={`w-12 h-14 text-center text-2xl font-bold rounded-xl border-2 outline-none transition-all duration-200 bg-[#0A0D0F] ${
+                  className={`w-full h-12 sm:h-14 text-center text-xl sm:text-2xl font-bold rounded-xl border-2 outline-none transition-all duration-200 bg-[#0A0D0F] ${
                     digit ? "border-[#BEF264] text-white glow-sm" : "border-white/10 text-white focus:border-[#BEF264]"
                   }`}
                 />
@@ -299,7 +299,7 @@ export default function SetupScreen() {
 
         {/* ═══ CONFIRM PIN ═══ */}
         {step === "confirm_pin" && (
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
             <div className="flex items-center gap-3 mb-8 text-left">
               <button onClick={() => { setStep("pin"); setConfirmPin(["","","","","",""]); }} className="text-slate-500 hover:text-white transition-colors">
                 <span className="material-symbols-outlined text-[20px]">arrow_back</span>
@@ -312,7 +312,7 @@ export default function SetupScreen() {
 
             <p className="text-sm text-slate-500 mb-8">Enter the same PIN again to confirm.</p>
 
-            <div className="flex justify-center gap-3 mb-6">
+            <div className="grid grid-cols-6 gap-2 sm:gap-3 mb-6">
               {confirmPin.map((digit, i) => (
                 <input
                   key={i}
@@ -323,7 +323,7 @@ export default function SetupScreen() {
                   value={digit}
                   onChange={(e) => handlePinDigit(i, e.target.value, false)}
                   onKeyDown={(e) => handlePinKeyDown(i, e, false)}
-                  className={`w-12 h-14 text-center text-2xl font-bold rounded-xl border-2 outline-none transition-all duration-200 bg-[#0A0D0F] ${
+                  className={`w-full h-12 sm:h-14 text-center text-xl sm:text-2xl font-bold rounded-xl border-2 outline-none transition-all duration-200 bg-[#0A0D0F] ${
                     digit ? "border-[#BEF264] text-white glow-sm" : "border-white/10 text-white focus:border-[#BEF264]"
                   }`}
                 />
@@ -351,7 +351,7 @@ export default function SetupScreen() {
 
         {/* ═══ DONE ═══ */}
         {step === "done" && (
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up text-center">
             <div className="w-20 h-20 rounded-full neon-green-bg flex items-center justify-center mx-auto mb-6 glow-md">
               <span className="material-symbols-outlined text-black text-[40px]">verified</span>
             </div>
@@ -368,3 +368,5 @@ export default function SetupScreen() {
     </div>
   );
 }
+  const getErrorMessage = (err: unknown, fallback: string) =>
+    err instanceof Error ? err.message : fallback;

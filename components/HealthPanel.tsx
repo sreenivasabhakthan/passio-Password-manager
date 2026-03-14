@@ -72,23 +72,23 @@ export default function HealthPanel({ entries, onSelect }: HealthPanelProps) {
   );
 
   return (
-    <section className="flex-1 overflow-y-auto bg-[#050708] p-10 relative">
+    <section className="flex-1 overflow-y-auto bg-[#050708] p-4 sm:p-6 lg:p-10 relative">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#BEF264] opacity-[0.03] blur-[120px] rounded-full -mr-64 -mt-64 pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-10">
-          <div className="w-14 h-14 rounded-2xl neon-green-bg flex items-center justify-center glow-md flex-shrink-0">
+        <div className="flex items-center gap-4 mb-8 sm:mb-10">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl neon-green-bg flex items-center justify-center glow-md flex-shrink-0">
             <span className="material-symbols-outlined text-black text-[28px]">shield</span>
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">Password Health</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Password Health</h1>
             <p className="text-sm text-slate-500">A brutally honest checkup of your digital hygiene.</p>
           </div>
         </div>
 
         {/* Score Overview */}
-        <div className="glass-card rounded-3xl p-8 mb-8 border border-white/10 flex items-center gap-8">
+        <div className="glass-card rounded-3xl p-5 sm:p-8 mb-8 border border-white/10 flex flex-col lg:flex-row items-start lg:items-center gap-6 sm:gap-8">
           <div className="relative w-24 h-24 flex-shrink-0">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
               <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="3" />
@@ -112,7 +112,7 @@ export default function HealthPanel({ entries, onSelect }: HealthPanelProps) {
                 : `Found ${totalIssues} issue${totalIssues > 1 ? "s" : ""} across your hoard that need attention.`}
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-4 text-center flex-shrink-0">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center flex-shrink-0 w-full lg:w-auto">
             <div className="glass-card rounded-xl p-3 border border-white/5">
               <span className="text-2xl font-bold text-red-400 block">{weakEntries.length}</span>
               <span className="text-[10px] text-slate-500 font-bold uppercase">Weak</span>
@@ -133,7 +133,7 @@ export default function HealthPanel({ entries, onSelect }: HealthPanelProps) {
         </div>
 
         {/* Issue Sections */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           <HealthCard title="Wet Noodles (Weak)" icon="dangerous" count={weakEntries.length} color="bg-red-500/10 text-red-400">
             <div className="space-y-1">
               {weakEntries.length === 0 ? (

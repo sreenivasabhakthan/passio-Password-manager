@@ -10,13 +10,16 @@ export default function AuthScreen() {
   const [forgotSent, setForgotSent] = useState(false);
   const [error, setError] = useState("");
 
+  const getErrorMessage = (err: unknown, fallback: string) =>
+    err instanceof Error ? err.message : fallback;
+
   const handleGoogleSignIn = async () => {
     setIsSigningIn(true);
     setError("");
     try {
       await signInWithGoogle();
-    } catch (err: any) {
-      setError(err.message || "Sign in failed. Try again.");
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, "Sign in failed. Try again."));
       setIsSigningIn(false);
     }
   };
@@ -25,22 +28,22 @@ export default function AuthScreen() {
     try {
       await sendRecoveryEmail(forgotEmail);
       setForgotSent(true);
-    } catch (err: any) {
-      setError(err.message || "Failed to send recovery email.");
+    } catch (err: unknown) {
+      setError(getErrorMessage(err, "Failed to send recovery email."));
     }
   };
 
   return (
-    <div className="h-full flex items-center justify-center bg-[#050708] relative overflow-hidden">
+    <div className="h-full flex items-center justify-center bg-[#050708] relative overflow-hidden px-4 py-6 sm:px-6">
       {/* Background effects */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#BEF264] opacity-[0.04] blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#BEF264] opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,_rgba(190,242,100,0.03)_0%,_transparent_70%)] pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-md px-6">
+      <div className="relative z-10 w-full max-w-md">
         {showForgot ? (
           /* ═══ FORGOT PASSWORD ═══ */
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up">
             <button onClick={() => { setShowForgot(false); setForgotSent(false); }} className="text-slate-500 hover:text-white transition-colors mb-6 flex items-center gap-1 text-sm">
               <span className="material-symbols-outlined text-[18px]">arrow_back</span> Back
             </button>
@@ -83,13 +86,13 @@ export default function AuthScreen() {
           </div>
         ) : (
           /* ═══ MAIN LOGIN ═══ */
-          <div className="glass-card rounded-3xl p-10 border border-white/10 shadow-2xl animate-scale-up">
+          <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up">
             {/* Logo */}
             <div className="text-center mb-10">
               <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-md shield-pulse overflow-hidden bg-[#BEF264]">
                 <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover" />
               </div>
-              <h1 className="text-3xl font-bold text-white tracking-tight mb-2">Passio</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">Passio</h1>
               <p className="text-sm text-slate-500 font-medium">The Digital Hoard</p>
               <p className="text-[10px] text-slate-600 mt-2 uppercase tracking-widest">Your secrets. Everywhere. Securely.</p>
             </div>

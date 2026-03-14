@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { PasswordEntry } from "./data/mockData";
 
 interface DetailPanelProps {
@@ -37,18 +37,18 @@ function TotpWidget({ onCopy }: { onCopy: (text: string, label: string) => void 
   const ringColor = secondsLeft > 10 ? "#BEF264" : secondsLeft > 5 ? "#D97706" : "#DC2626";
 
   return (
-    <div className="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden group">
+    <div className="glass-card rounded-2xl p-4 sm:p-6 border border-white/10 relative overflow-hidden group">
       <div className="absolute inset-0 bg-gradient-to-br from-[#BEF264]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="relative z-10">
         <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block mb-4">Short-lived Magic (TOTP)</label>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <button
             onClick={() => onCopy(code.replace(" ", ""), "TOTP Code")}
-            className="flex gap-4 items-baseline hover:opacity-80 transition-opacity cursor-pointer"
+            className="flex gap-3 sm:gap-4 items-baseline hover:opacity-80 transition-opacity cursor-pointer"
             title="Click to copy"
           >
-            <span className="text-4xl font-bold tracking-[0.2em] text-white">{code.split(" ")[0]}</span>
-            <span className="text-4xl font-bold tracking-[0.2em] text-white">{code.split(" ")[1]}</span>
+            <span className="text-3xl sm:text-4xl font-bold tracking-[0.14em] sm:tracking-[0.2em] text-white">{code.split(" ")[0]}</span>
+            <span className="text-3xl sm:text-4xl font-bold tracking-[0.14em] sm:tracking-[0.2em] text-white">{code.split(" ")[1]}</span>
           </button>
           <div className="relative w-12 h-12">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
@@ -110,11 +110,9 @@ function HistoryTab({ entry }: { entry: PasswordEntry }) {
 
 /* ── Notes Tab ── */
 function NotesTab({ entry, onUpdate }: { entry: PasswordEntry; onUpdate: (updated: PasswordEntry, original: PasswordEntry) => void }) {
-  const [notes, setNotes] = useState(entry.notes);
+  const [notes, setNotes] = useState(() => entry.notes);
   const [saved, setSaved] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  useEffect(() => { setNotes(entry.notes); }, [entry.id, entry.notes]);
 
   const handleChange = useCallback((val: string) => {
     setNotes(val);
@@ -170,14 +168,6 @@ export default function DetailPanel({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  useEffect(() => {
-    setShowPassword(false);
-    setActiveTab("details");
-    setIsEditing(false);
-    setShowDeleteConfirm(false);
-    setCopiedField(null);
-  }, [entry?.id]);
-
   const handleCopy = useCallback((text: string, field: string) => {
     onCopy(text, field);
     setCopiedField(field);
@@ -229,25 +219,25 @@ export default function DetailPanel({
   };
 
   return (
-    <section className="flex-1 overflow-y-auto bg-[#050708] p-10 relative">
+    <section className="flex-1 overflow-y-auto bg-[#050708] p-4 sm:p-6 lg:p-10 relative">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#BEF264] opacity-[0.03] blur-[120px] rounded-full -mr-64 -mt-64 pointer-events-none" />
 
       {/* Header */}
-      <div className="flex justify-between items-start mb-10 relative z-10">
-        <div className="flex gap-6">
-          <div className="w-20 h-20 glass-card rounded-2xl flex items-center justify-center glow-sm border border-white/10">
-            <span className="material-symbols-outlined text-[40px] neon-green-text">{getCatIcon(entry.category)}</span>
+      <div className="flex flex-col gap-5 lg:flex-row lg:justify-between lg:items-start mb-8 sm:mb-10 relative z-10">
+        <div className="flex gap-4 sm:gap-6 min-w-0">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 glass-card rounded-2xl flex items-center justify-center glow-sm border border-white/10 flex-shrink-0">
+            <span className="material-symbols-outlined text-[32px] sm:text-[40px] neon-green-text">{getCatIcon(entry.category)}</span>
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-3 mb-1">
               {isEditing ? (
                 <input
                   value={editForm.name}
                   onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                  className="text-4xl font-bold tracking-tight text-white bg-transparent border-b-2 neon-green-border outline-none"
+                  className="text-2xl sm:text-4xl font-bold tracking-tight text-white bg-transparent border-b-2 neon-green-border outline-none min-w-0 w-full"
                 />
               ) : (
-                <h2 className="text-4xl font-bold tracking-tight text-white">{entry.name}</h2>
+                <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-white break-words">{entry.name}</h2>
               )}
               <button
                 onClick={() => onToggleFavorite(entry.id)}
@@ -256,32 +246,32 @@ export default function DetailPanel({
                 <span className="material-symbols-outlined text-[24px]">{entry.isFavorite ? "star" : "star_border"}</span>
               </button>
             </div>
-            <p className="text-slate-500 flex items-center gap-2 text-sm">
+            <p className="text-slate-500 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
               Last touched: {entry.lastChanged}
               <span className="w-1 h-1 rounded-full bg-slate-700" />
               Lost in vault since: {entry.created}
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {isTrash ? (
             <button
               onClick={() => onRestore?.(entry.id)}
-              className="px-5 py-2 rounded-xl neon-green-bg text-black font-bold hover:bg-[#D9F99D] transition-all flex items-center gap-2"
+              className="px-4 sm:px-5 py-2 rounded-xl neon-green-bg text-black font-bold hover:bg-[#D9F99D] transition-all flex items-center gap-2"
             >
               <span className="material-symbols-outlined text-[20px]">restore</span>
               Restore
             </button>
           ) : isEditing ? (
             <>
-              <button onClick={saveEdit} className="px-5 py-2 rounded-xl neon-green-bg text-black font-bold hover:bg-[#D9F99D] transition-all flex items-center gap-2">
+              <button onClick={saveEdit} className="px-4 sm:px-5 py-2 rounded-xl neon-green-bg text-black font-bold hover:bg-[#D9F99D] transition-all flex items-center gap-2">
                 <span className="material-symbols-outlined text-[20px]">save</span>Save
               </button>
               <button onClick={() => setIsEditing(false)} className="px-4 py-2 rounded-xl glass-card border-white/10 text-slate-400 font-bold transition-all">Cancel</button>
             </>
           ) : (
             <>
-              <button onClick={startEdit} className="px-5 py-2 rounded-xl neon-green-bg text-black font-bold hover:bg-[#D9F99D] transition-all flex items-center gap-2">
+              <button onClick={startEdit} className="px-4 sm:px-5 py-2 rounded-xl neon-green-bg text-black font-bold hover:bg-[#D9F99D] transition-all flex items-center gap-2">
                 <span className="material-symbols-outlined text-[20px]">edit</span>Edit
               </button>
               <a href={`https://${entry.website}`} target="_blank" rel="noreferrer" className="p-2 rounded-xl glass-card border-white/10 hover:border-white/20 text-slate-400 transition-all flex items-center" title="Launch Website">
@@ -300,7 +290,7 @@ export default function DetailPanel({
 
       {/* Delete Confirmation */}
       {showDeleteConfirm && (
-        <div className="mb-6 p-5 rounded-2xl bg-red-500/5 border border-red-500/20 flex gap-4 items-center relative z-10">
+        <div className="mb-6 p-4 sm:p-5 rounded-2xl bg-red-500/5 border border-red-500/20 flex flex-col sm:flex-row gap-4 sm:items-center relative z-10">
           <span className="material-symbols-outlined text-red-400 text-[24px]">warning</span>
           <div className="flex-1">
             <p className="text-sm font-bold text-red-400">Incinerate this loot?</p>
@@ -316,7 +306,7 @@ export default function DetailPanel({
       )}
 
       {/* Tabs */}
-      <div className="flex gap-8 border-b border-white/5 mb-8 relative z-10">
+      <div className="flex gap-5 sm:gap-8 border-b border-white/5 mb-8 relative z-10 overflow-x-auto no-scrollbar">
         {([["details", "Details"], ["history", "Password History"], ["notes", "Drunken Notes"]] as const).map(([tab, label]) => (
           <button
             key={tab}
@@ -332,7 +322,7 @@ export default function DetailPanel({
 
       {/* Breach Alert */}
       {activeTab === "details" && entry.breached && (
-        <div className="mb-10 p-5 rounded-2xl bg-[#FFA500]/5 border border-[#FFA500]/20 flex gap-4 items-center">
+        <div className="mb-8 sm:mb-10 p-4 sm:p-5 rounded-2xl bg-[#FFA500]/5 border border-[#FFA500]/20 flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="w-10 h-10 rounded-full bg-[#FFA500]/10 flex items-center justify-center flex-shrink-0">
             <span className="material-symbols-outlined text-[#FFA500]">warning</span>
           </div>
@@ -348,7 +338,7 @@ export default function DetailPanel({
 
       {/* Reused Alert */}
       {activeTab === "details" && entry.reused && !entry.breached && (
-        <div className="mb-10 p-5 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex gap-4 items-center">
+        <div className="mb-8 sm:mb-10 p-4 sm:p-5 rounded-2xl bg-amber-500/5 border border-amber-500/20 flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
             <span className="material-symbols-outlined text-amber-500">content_copy</span>
           </div>
@@ -361,16 +351,16 @@ export default function DetailPanel({
 
       {/* ═══ DETAILS TAB ═══ */}
       {activeTab === "details" && (
-        <div className="grid grid-cols-12 gap-10">
-          <div className="col-span-7 space-y-8">
-            <div className="flex gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-10">
+          <div className="xl:col-span-7 space-y-6 sm:space-y-8 min-w-0">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
               <div className="flex-1">
                 <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block mb-3">Site Title / Fake Brand</label>
                 <div className="glass-card rounded-xl px-4 py-3 text-white font-medium">{isEditing ? (
                   <input value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className="bg-transparent outline-none w-full" />
                 ) : entry.name}</div>
               </div>
-              <div className="w-48">
+              <div className="sm:w-48">
                 <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block mb-3">Category</label>
                 <div className="px-3 py-3 rounded-xl bg-[#BEF264]/10 neon-green-text text-xs font-bold uppercase text-center border border-[#BEF264]/20">{entry.category}</div>
               </div>
@@ -385,7 +375,7 @@ export default function DetailPanel({
                 ) : (
                   <span className="text-slate-300 font-medium flex-1">{entry.username}</span>
                 )}
-                <button onClick={() => handleCopy(entry.username, "Username")} className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-white/5 rounded text-slate-500 hover:text-[#BEF264]">
+                <button onClick={() => handleCopy(entry.username, "Username")} className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity p-1.5 hover:bg-white/5 rounded text-slate-500 hover:text-[#BEF264]">
                   <span className="material-symbols-outlined text-[18px]">{copiedField === "Username" ? "done" : "content_copy"}</span>
                 </button>
               </div>
@@ -394,14 +384,14 @@ export default function DetailPanel({
             {/* Password */}
             <div>
               <label className="text-[10px] uppercase tracking-widest text-slate-500 font-bold block mb-3">Magic Word</label>
-              <div className={`glass-card rounded-xl px-4 py-3 flex items-center gap-4 border transition-all ${copiedField === "Password" ? "border-[#BEF264]/50 bg-[#BEF264]/5" : "border-white/5"}`}>
+              <div className={`glass-card rounded-xl px-4 py-3 flex items-center gap-3 sm:gap-4 border transition-all ${copiedField === "Password" ? "border-[#BEF264]/50 bg-[#BEF264]/5" : "border-white/5"}`}>
                 <div className="flex gap-1.5 flex-1 items-center">
                   {isEditing ? (
-                    <input value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} type={showPassword ? "text" : "password"} className="flex-1 bg-transparent text-white font-mono outline-none" />
+                    <input value={editForm.password} onChange={(e) => setEditForm({ ...editForm, password: e.target.value })} type={showPassword ? "text" : "password"} className="flex-1 bg-transparent text-white font-mono outline-none min-w-0" />
                   ) : showPassword ? (
-                    <span className="text-white font-mono transition-opacity duration-300">{entry.password}</span>
+                    <span className="text-white font-mono transition-opacity duration-300 break-all">{entry.password}</span>
                   ) : (
-                    <div className="flex gap-1.5">{Array.from({ length: Math.min(entry.password.length, 12) }).map((_, i) => (
+                    <div className="flex gap-1.5 flex-wrap">{Array.from({ length: Math.min(entry.password.length, 12) }).map((_, i) => (
                       <span key={i} className="w-2 h-2 rounded-full bg-slate-600" />
                     ))}</div>
                   )}
@@ -448,7 +438,7 @@ export default function DetailPanel({
                 ) : (
                   <a href={`https://${entry.website}`} target="_blank" rel="noreferrer" className="neon-green-text hover:underline font-medium flex-1 truncate">{entry.website}</a>
                 )}
-                <button className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-white/5 rounded text-slate-500 hover:text-[#BEF264]">
+                <button className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity p-1.5 hover:bg-white/5 rounded text-slate-500 hover:text-[#BEF264]">
                   <span className="material-symbols-outlined text-[18px]">open_in_new</span>
                 </button>
               </div>
@@ -464,7 +454,7 @@ export default function DetailPanel({
           </div>
 
           {/* Right Column */}
-          <div className="col-span-5 space-y-6">
+          <div className="xl:col-span-5 space-y-6">
             {entry.hasTotp && <TotpWidget onCopy={onCopy} />}
 
             {/* Security Checklist */}
@@ -524,7 +514,7 @@ export default function DetailPanel({
       {activeTab === "history" && <HistoryTab entry={entry} />}
 
       {/* ═══ NOTES TAB ═══ */}
-      {activeTab === "notes" && <NotesTab entry={entry} onUpdate={onUpdate} />}
+      {activeTab === "notes" && <NotesTab key={entry.id} entry={entry} onUpdate={onUpdate} />}
     </section>
   );
 }
