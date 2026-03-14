@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useAuth } from "@/components/AuthProvider";
 import AuthScreen from "@/components/AuthScreen";
 import SetupScreen from "@/components/SetupScreen";
@@ -12,8 +13,8 @@ export default function Home() {
     return (
       <div className="h-full flex items-center justify-center bg-[#050708]">
         <div className="text-center">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-md shield-pulse overflow-hidden bg-[#BEF264]">
-            <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover" />
+          <div className="relative mx-auto mb-6 flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl bg-[#BEF264] glow-md shield-pulse">
+            <Image src="/logo.png" alt="Passio Logo" fill sizes="64px" className="object-cover" />
           </div>
           <p className="text-slate-500 text-sm font-medium">Opening the vault...</p>
         </div>

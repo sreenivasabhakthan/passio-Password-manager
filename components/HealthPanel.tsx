@@ -5,6 +5,7 @@ import { PasswordEntry } from "./data/mockData";
 interface HealthPanelProps {
   entries: PasswordEntry[];
   onSelect: (entry: PasswordEntry) => void;
+  onBack?: () => void;
 }
 
 function HealthCard({ title, icon, count, color, children }: {
@@ -26,7 +27,7 @@ function HealthCard({ title, icon, count, color, children }: {
   );
 }
 
-export default function HealthPanel({ entries, onSelect }: HealthPanelProps) {
+export default function HealthPanel({ entries, onSelect, onBack }: HealthPanelProps) {
   const weakEntries = useMemo(() => entries.filter((e) => e.strength === "Weak"), [entries]);
   const reusedEntries = useMemo(() => entries.filter((e) => e.reused), [entries]);
   const no2FAEntries = useMemo(() => entries.filter((e) => !e.has2FA), [entries]);
@@ -77,9 +78,18 @@ export default function HealthPanel({ entries, onSelect }: HealthPanelProps) {
 
       <div className="relative z-10 max-w-4xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8 sm:mb-10">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl neon-green-bg flex items-center justify-center glow-md flex-shrink-0">
-            <span className="material-symbols-outlined text-black text-[28px]">shield</span>
+        <div className="mb-8 flex items-center gap-4 sm:mb-10">
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-[#0F1419] text-slate-300 transition-colors hover:text-[#BEF264]"
+              title="Back to vault"
+            >
+              <span className="material-symbols-outlined text-[24px]">arrow_back</span>
+            </button>
+          )}
+          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl neon-green-bg glow-md sm:h-14 sm:w-14">
+            <span className="material-symbols-outlined text-[28px] text-black">shield</span>
           </div>
           <div>
             <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Password Health</h1>

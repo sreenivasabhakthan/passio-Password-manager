@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
 import { hashPin } from "@/lib/firestore";
 
@@ -52,8 +53,8 @@ export default function LockScreen({ onUnlock, masterPasswordHash }: LockScreenP
         <div className="glass-card border border-white/10 rounded-3xl shadow-2xl p-6 sm:p-10 text-center backdrop-blur-2xl">
           {/* Shield icon */}
           <div className="mb-10 flex justify-center">
-            <div className="shield-pulse w-24 h-24 rounded-3xl bg-[#BEF264]/10 border border-[#BEF264]/30 flex items-center justify-center glow-sm overflow-hidden p-2">
-              <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover rounded-2xl" />
+            <div className="shield-pulse relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-3xl border border-[#BEF264]/30 bg-[#BEF264]/10 p-2 glow-sm">
+              <Image src="/logo.png" alt="Passio Logo" fill sizes="96px" className="rounded-2xl object-cover p-2" />
             </div>
           </div>
 

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
 import { useAuth } from "./AuthProvider";
 
@@ -89,8 +90,8 @@ export default function AuthScreen() {
           <div className="glass-card rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl animate-scale-up">
             {/* Logo */}
             <div className="text-center mb-10">
-              <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-md shield-pulse overflow-hidden bg-[#BEF264]">
-                <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover" />
+              <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-[#BEF264] glow-md shield-pulse">
+                <Image src="/logo.png" alt="Passio Logo" fill sizes="80px" className="object-cover" />
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">Passio</h1>
               <p className="text-sm text-slate-500 font-medium">The Digital Hoard</p>
