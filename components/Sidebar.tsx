@@ -1,5 +1,6 @@
 "use client";
-import { MOCK_ENTRIES, PasswordEntry } from "./data/mockData";
+import Image from "next/image";
+import { PasswordEntry } from "./data/mockData";
 
 type Section = "all" | "favorites" | "passwords" | "notes" | "cards" | "identities" | "health" | "generator" | "trash";
 
@@ -36,8 +37,8 @@ export default function Sidebar({ activeSection, onSectionChange, entries, onLoc
         className="flex items-center gap-3 mb-10 px-2 cursor-pointer"
         onClick={() => onSectionChange("all")}
       >
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center glow-sm flex-shrink-0 overflow-hidden bg-[#BEF264]">
-          <img src="/logo.png" alt="Passio Logo" className="w-full h-full object-cover" />
+        <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#BEF264] glow-sm">
+          <Image src="/logo.png" alt="Passio Logo" fill sizes="32px" className="object-cover" />
         </div>
         <span className="text-lg font-bold tracking-tight text-white leading-tight hidden lg:block">
           Passio: The Digital Hoard

@@ -12,7 +12,21 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase (prevent double init in dev)
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+let app;
+if (getApps().length === 0) {
+  if (firebaseConfig.apiKey) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    // Fallback for build time if env variables are missing
+    app = initializeApp({
+      apiKey: "placeholder",
+      authDomain: "placeholder",
+      projectId: "placeholder",
+    });
+  }
+} else {
+  app = getApps()[0];
+}
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);

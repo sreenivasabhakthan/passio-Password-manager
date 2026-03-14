@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PasswordEntry } from "./data/mockData";
 
 interface DetailPanelProps {
