@@ -306,7 +306,14 @@ export default function PassioApp() {
         <div className="safe-area-inset-top flex h-full min-w-0 w-full flex-col md:hidden">
           {mobileView === "health" ? (
             <div className="flex-1 overflow-hidden pb-20">
-              <HealthPanel entries={entries} onSelect={handleHealthSelect} />
+              <HealthPanel
+                entries={entries}
+                onSelect={handleHealthSelect}
+                onBack={() => {
+                  setActiveSection("all");
+                  setMobileView("home");
+                }}
+              />
             </div>
           ) : mobileView === "detail" && selectedEntry ? (
             <div className="flex-1 overflow-hidden">
